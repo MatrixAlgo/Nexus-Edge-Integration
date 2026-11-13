@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="D5_AckDispatcher.msgflow" nsPrefix="D5_AckDispatcher.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.CentralBaseUrl" name="CentralBaseUrl" defaultValueLiteral="http://127.0.0.1:8500">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="D5_AckDispatcher" bundleName="D5_AckDispatcher" pluginId="D5_EdgeSync"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="20,120" queueName="D5.OUT.ACK" messageDomainProperty="JSON" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Business_Acks"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="220,120" computeExpression="esql://routine/#D5_PrepareAckCall.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="Prepare_Ack_Call"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="440,120" URLSpecifier="http://127.0.0.1:8500/internal/ack" httpMethod="POST" httpVersion="1.1" timeoutForServer="15" messageDomainProperty="JSON">
+        <translation xmi:type="utility:ConstantString" string="Record_Ack_In_Ledger"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.CentralBaseUrl">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.CentralBaseUrl" bundleName="D5_AckDispatcher" pluginId="D5_EdgeSync"/>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard>
+      <stickyNote location="20,320">
+        <body xmi:type="utility:ConstantString" string="Consumes D5.OUT.ACK under syncpoint and records the acknowledgement in the central ledger. Error/failure terminals are deliberately unconnected: the get rolls back and is retried (BOTHRESH 10, then D5.ERROR)."/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>

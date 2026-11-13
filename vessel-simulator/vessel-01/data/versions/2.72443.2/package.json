@@ -1,0 +1,1 @@
+{"files": {"agent/feature_flags.json": ["outbox", "priority-dispatch", "ack-tracking", "delta-compression"]}, "manifest": {"builtAt": "2026-11-12T08:34:09.969Z", "features": ["outbox", "priority-dispatch", "ack-tracking", "delta-compression"], "healthCheck": "fail", "minPython": "3.9", "name": "d5-edge-agent", "version": "2.72443.2"}}

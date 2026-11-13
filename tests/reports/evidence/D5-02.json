@@ -1,0 +1,177 @@
+{
+  "id": "D5-02",
+  "name": "Satellite disconnection: 10 records created offline",
+  "startedAt": "2026-11-12T08:33:14.652966Z",
+  "created": [
+    {
+      "recordId": "MNT-2004",
+      "version": 1,
+      "priority": "LOW",
+      "eventId": "d9278dd2-8b33-4c82-88a5-5c512e477406",
+      "sequenceNumber": 14
+    },
+    {
+      "recordId": "PR-1005",
+      "version": 1,
+      "priority": "CRITICAL",
+      "eventId": "2b1425d8-86a5-4295-9bc7-2c42bd86fc5a",
+      "sequenceNumber": 15
+    },
+    {
+      "recordId": "MNT-2005",
+      "version": 1,
+      "priority": "LOW",
+      "eventId": "ac416f2f-ef81-476e-b34d-165ed3dacfc7",
+      "sequenceNumber": 16
+    },
+    {
+      "recordId": "EMR-4004",
+      "version": 1,
+      "priority": "CRITICAL",
+      "eventId": "46317546-471f-4c24-b7a6-9e8261359c3f",
+      "sequenceNumber": 17
+    },
+    {
+      "recordId": "PR-1006",
+      "version": 1,
+      "priority": "CRITICAL",
+      "eventId": "112283c1-299b-49e5-8024-443cc3935db5",
+      "sequenceNumber": 18
+    },
+    {
+      "recordId": "MNT-2006",
+      "version": 1,
+      "priority": "LOW",
+      "eventId": "2bf565df-4b57-4d74-914f-8df95ad58119",
+      "sequenceNumber": 19
+    },
+    {
+      "recordId": "EMR-4005",
+      "version": 1,
+      "priority": "CRITICAL",
+      "eventId": "7b40feb5-7d88-46c1-bcf3-88649a6e54fe",
+      "sequenceNumber": 20
+    },
+    {
+      "recordId": "GRN-3002",
+      "version": 1,
+      "priority": "NORMAL",
+      "eventId": "051613d5-3c64-4a34-9413-7ec37c011960",
+      "sequenceNumber": 21
+    },
+    {
+      "recordId": "EMR-4006",
+      "version": 1,
+      "priority": "CRITICAL",
+      "eventId": "ebc00f6e-987d-4fcb-8c6f-d3d63819eac1",
+      "sequenceNumber": 22
+    },
+    {
+      "recordId": "MNT-2007",
+      "version": 1,
+      "priority": "LOW",
+      "eventId": "873633cc-d8a7-4ff2-95e5-1ccfca7253cc",
+      "sequenceNumber": 23
+    }
+  ],
+  "edgeStatus": {
+    "vesselId": "VESSEL-01",
+    "agentVersion": "1.0.0",
+    "previousAgentVersion": null,
+    "agentFeatures": [
+      "outbox",
+      "priority-dispatch",
+      "ack-tracking"
+    ],
+    "configVersion": 2,
+    "config": {
+      "syncEnabled": true,
+      "dispatchIntervalSec": 1.0,
+      "ackPollIntervalSec": 0.5,
+      "ackTimeoutSec": 20,
+      "retryBaseSec": 2,
+      "retryMaxSec": 30,
+      "heartbeatSec": 4,
+      "requestTimeoutSec": 8,
+      "priorityRules": {
+        "EMERGENCY_MAINTENANCE": "CRITICAL",
+        "PR": "CRITICAL",
+        "GRN": "NORMAL",
+        "MAINTENANCE": "LOW"
+      }
+    },
+    "linkObserved": "DOWN",
+    "offlineSince": "2026-11-12T08:33:14.701Z",
+    "lastSyncAt": "2026-11-12T08:33:13.651Z",
+    "queue": {
+      "pending": 10,
+      "inFlight": 0,
+      "awaitingAck": 0,
+      "acknowledged": 13,
+      "failed": 0,
+      "total": 23,
+      "openCritical": 5,
+      "openNormal": 1,
+      "openLow": 4
+    },
+    "records": 22,
+    "threads": {
+      "dispatcher": true,
+      "management": true
+    },
+    "resources": {
+      "measured": {
+        "measuredAt": "2026-11-12T08:33:22Z",
+        "uptimeSec": 146,
+        "cpuPercent": 0.0,
+        "rssMB": 24.2,
+        "threads": 4,
+        "cgroupMemoryMB": 14.1,
+        "diskUsedMB": 2.61
+      },
+      "configuredLimits": {
+        "cgroup": "/sys/fs/cgroup/system.slice/d5-edge-vessel-01.service",
+        "cpuVcpu": 1.0,
+        "memoryMB": 512,
+        "source": "cgroup v2 (systemd CPUQuota / MemoryMax)"
+      },
+      "targets": {
+        "cpuVcpu": 1,
+        "memoryMB": 512,
+        "diskMB": 2048
+      },
+      "estimatedProduction": {
+        "cpuVcpu": 1,
+        "memoryMB": 512,
+        "diskMB": 2048,
+        "note": "estimate only - not measured on vessel hardware"
+      }
+    }
+  },
+  "sqliteRows": 10,
+  "pendingInSqlite": 10,
+  "atCentral": [],
+  "relayBlocked": [
+    6,
+    11
+  ],
+  "mqBefore": {
+    "D5.DLQ": 0,
+    "D5.ERROR": 0,
+    "D5.IN.CRITICAL": 0,
+    "D5.IN.LOW": 0,
+    "D5.IN.NORMAL": 0,
+    "D5.OUT.ACK": 0
+  },
+  "mqAfter": {
+    "D5.DLQ": 0,
+    "D5.ERROR": 0,
+    "D5.IN.CRITICAL": 0,
+    "D5.IN.LOW": 0,
+    "D5.IN.NORMAL": 0,
+    "D5.OUT.ACK": 0
+  },
+  "durationSec": 8.1,
+  "passed": true,
+  "actual": "10 records in vessel SQLite, 10 pending in outbox (queue depth 10); edge sees link DOWN; relay blocked 5 requests; 0 of 10 at central"
+}

@@ -1,0 +1,15 @@
+{
+  "host": "127.0.0.1",
+  "port": 8500,
+  "database": "central-office/database/central.db",
+  "conflictPolicy": "central-office/config/conflict-policy.json",
+  "networkSimulatorUrl": "http://127.0.0.1:8510",
+  "aceAdminUrl": "http://127.0.0.1:7614",
+  "aceHttpUrl": "http://127.0.0.1:7840",
+  "queueManager": "D5QM",
+  "heartbeatStaleSec": 20,
+  "vessels": [
+    {"vesselId": "VESSEL-01", "name": "Barge Marawah", "group": "GULF-FLEET", "edgePort": 8501},
+    {"vesselId": "VESSEL-02", "name": "OSV Sir Bani Yas", "group": "GULF-FLEET", "edgePort": 8502}
+  ]
+}

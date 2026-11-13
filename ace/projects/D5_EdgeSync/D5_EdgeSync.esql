@@ -1,0 +1,236 @@
+-- D5 Vessel-to-Office Edge Synchronization - IBM ACE 13 ESQL
+--
+-- D5_EventIngest     : HTTP (from vessel edge via satellite link) -> validate -> route by priority -> PERSISTENT MQ put
+-- D5_EventProcessor  : D5.IN.CRITICAL|NORMAL|LOW (syncpoint) -> central processing (HTTP) -> business ack on D5.OUT.ACK
+-- D5_AckDispatcher   : D5.OUT.ACK (syncpoint) -> record the business acknowledgement in the central ledger
+-- D5_EventStatus     : HTTP status query (edge) -> central ledger -> reply
+--
+-- MQ priority mapping: CRITICAL -> queue D5.IN.CRITICAL, MQMD.Priority 9; NORMAL -> D5.IN.NORMAL, 5; LOW -> D5.IN.LOW, 1.
+-- CorrelId of every D5 message = the 16 bytes of the eventId UUID followed by 8 zero bytes.
+
+
+CREATE COMPUTE MODULE D5_ValidateAndRoute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE e REFERENCE TO InputRoot.JSON.Data;
+		DECLARE errs CHARACTER '';
+		DECLARE eid CHARACTER COALESCE(CAST(FIELDVALUE(e.eventId) AS CHARACTER), '');
+		IF LENGTH(eid) <> 36 OR TRANSLATE(eid, '0123456789abcdef-', '') <> '' THEN
+			SET errs = errs || 'eventId must be a lowercase UUID; ';
+		END IF;
+		IF COALESCE(FIELDVALUE(e.recordId), '') = '' THEN SET errs = errs || 'recordId is required; '; END IF;
+		IF COALESCE(FIELDVALUE(e.vesselId), '') = '' THEN SET errs = errs || 'vesselId is required; '; END IF;
+		IF NOT (COALESCE(FIELDVALUE(e.recordType), '') IN ('PR', 'GRN', 'MAINTENANCE', 'EMERGENCY_MAINTENANCE')) THEN
+			SET errs = errs || 'recordType is invalid; ';
+		END IF;
+		IF NOT (COALESCE(FIELDVALUE(e.eventType), '') IN ('RECORD_CREATED', 'RECORD_UPDATED')) THEN
+			SET errs = errs || 'eventType is invalid; ';
+		END IF;
+		IF e.sequenceNumber IS NULL THEN SET errs = errs || 'sequenceNumber is required; '; END IF;
+		IF e.version IS NULL THEN SET errs = errs || 'version is required; '; END IF;
+		DECLARE p REFERENCE TO e.payload;
+		IF NOT LASTMOVE(p) THEN SET errs = errs || 'payload is required; '; END IF;
+
+		DECLARE prio CHARACTER COALESCE(FIELDVALUE(e.priority), '');
+		DECLARE q CHARACTER 'D5.ERROR';
+		DECLARE mqp INTEGER 0;
+		CASE prio
+			WHEN 'CRITICAL' THEN SET q = 'D5.IN.CRITICAL'; SET mqp = 9;
+			WHEN 'NORMAL'   THEN SET q = 'D5.IN.NORMAL';   SET mqp = 5;
+			WHEN 'LOW'      THEN SET q = 'D5.IN.LOW';      SET mqp = 1;
+			ELSE SET errs = errs || 'priority must be CRITICAL, NORMAL or LOW; ';
+		END CASE;
+
+		SET OutputRoot.Properties = InputRoot.Properties;
+		CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN 'MQMD' NAME 'MQMD';
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;
+		SET OutputRoot.MQMD.CodedCharSetId = 1208;
+		SET OutputRoot.MQMD.Persistence = MQPER_PERSISTENT;
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		DECLARE now CHARACTER CAST(CURRENT_GMTTIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z''');
+
+		IF errs = '' THEN
+			SET OutputRoot.MQMD.Priority = mqp;
+			SET OutputRoot.MQMD.CorrelId = CAST(REPLACE(eid, '-', '') || '0000000000000000' AS BLOB);
+			SET OutputRoot.JSON.Data = e;
+			SET OutputRoot.JSON.Data.integration.receivedAt = now;
+			SET OutputRoot.JSON.Data.integration.integrationServer = 'IS_D5_EDGE';
+			SET OutputRoot.JSON.Data.integration.queue = q;
+			SET OutputRoot.JSON.Data.integration.mqPriority = mqp;
+			SET OutputRoot.JSON.Data.integration.via = InputRoot.HTTPInputHeader."X-D5-Via";
+			SET Environment.Variables.ReplyCode = 202;
+			SET Environment.Variables.Reply.status = 'ACCEPTED';
+			SET Environment.Variables.Reply.eventId = eid;
+			SET Environment.Variables.Reply.queue = q;
+			SET Environment.Variables.Reply.mqPriority = mqp;
+			SET Environment.Variables.Reply.acceptedAt = now;
+			SET Environment.Variables.Reply.note = 'Persisted on IBM MQ (D5QM). NOT a business acknowledgement - poll /d5/v1/event-status.';
+		ELSE
+			SET OutputRoot.MQMD.Priority = 0;
+			SET OutputRoot.JSON.Data.error.stage = 'ACE_VALIDATION';
+			SET OutputRoot.JSON.Data.error.reasons = errs;
+			SET OutputRoot.JSON.Data.error.at = now;
+			SET OutputRoot.JSON.Data.event = e;
+			SET Environment.Variables.ReplyCode = 400;
+			SET Environment.Variables.Reply.status = 'REJECTED';
+			SET Environment.Variables.Reply.eventId = eid;
+			SET Environment.Variables.Reply.errors = errs;
+			SET Environment.Variables.Reply.parkedOn = 'D5.ERROR';
+		END IF;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData[1].queueName = q;
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_BuildIngestReply
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.HTTPReplyHeader."Content-Type" = 'application/json';
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		SET OutputRoot.JSON.Data = Environment.Variables.Reply;
+		IF Environment.Variables.ReplyCode = 202 THEN
+			SET OutputRoot.JSON.Data.mqMsgId = CAST(InputLocalEnvironment.WrittenDestination.MQ.DestinationData[1].msgId AS CHARACTER);
+		END IF;
+		SET OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode = Environment.Variables.ReplyCode;
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_PrepareCentralCall
+	DECLARE CentralBaseUrl EXTERNAL CHARACTER 'http://127.0.0.1:8500';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.Variables.CorrelId = InputRoot.MQMD.CorrelId;
+		SET Environment.Variables.Priority = FIELDVALUE(InputRoot.JSON.Data.priority);
+		SET Environment.Variables.Event = InputRoot.JSON.Data;
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = CentralBaseUrl || '/internal/process-event';
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.HTTPRequestHeader."Content-Type" = 'application/json';
+		SET OutputRoot.HTTPRequestHeader."X-D5-MQ-Queue" = 'D5.IN.' || COALESCE(Environment.Variables.Priority, 'UNKNOWN');
+		SET OutputRoot.HTTPRequestHeader."X-D5-MQ-Backout" = CAST(InputRoot.MQMD.BackoutCount AS CHARACTER);
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_BuildBusinessAck
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN 'MQMD' NAME 'MQMD';
+		SET OutputRoot.MQMD.Version = MQMD_CURRENT_VERSION;
+		SET OutputRoot.MQMD.Format = MQFMT_STRING;
+		SET OutputRoot.MQMD.CodedCharSetId = 1208;
+		SET OutputRoot.MQMD.Persistence = MQPER_PERSISTENT;
+		SET OutputRoot.MQMD.CorrelId = Environment.Variables.CorrelId;
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+		SET OutputRoot.JSON.Data.ackType = 'BUSINESS_ACK';
+		SET OutputRoot.JSON.Data.ackCreatedAt = CAST(CURRENT_GMTTIMESTAMP AS CHARACTER FORMAT 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z''');
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_HandleCentralError
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE code INTEGER CAST(COALESCE(InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code", '500') AS INTEGER);
+		IF code >= 400 AND code < 500 THEN
+			-- permanent business rejection: park the original event on D5.ERROR and publish a REJECTED ack
+			SET OutputRoot.Properties = InputRoot.Properties;
+			CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN 'MQMD' NAME 'MQMD';
+			SET OutputRoot.MQMD.Format = MQFMT_STRING;
+			SET OutputRoot.MQMD.CodedCharSetId = 1208;
+			SET OutputRoot.MQMD.Persistence = MQPER_PERSISTENT;
+			SET OutputRoot.MQMD.CorrelId = Environment.Variables.CorrelId;
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+			SET OutputRoot.JSON.Data.error.stage = 'CENTRAL_PROCESSING';
+			SET OutputRoot.JSON.Data.error.httpStatus = code;
+			SET OutputRoot.JSON.Data.error.response = InputRoot.JSON.Data;
+			SET OutputRoot.JSON.Data.event = Environment.Variables.Event;
+			PROPAGATE TO TERMINAL 'out';
+
+			SET OutputRoot.Properties = InputRoot.Properties;
+			CREATE NEXTSIBLING OF OutputRoot.Properties DOMAIN 'MQMD' NAME 'MQMD';
+			SET OutputRoot.MQMD.Format = MQFMT_STRING;
+			SET OutputRoot.MQMD.CodedCharSetId = 1208;
+			SET OutputRoot.MQMD.Persistence = MQPER_PERSISTENT;
+			SET OutputRoot.MQMD.CorrelId = Environment.Variables.CorrelId;
+			CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+			SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+			SET OutputRoot.JSON.Data.ackType = 'BUSINESS_REJECTION';
+			PROPAGATE TO TERMINAL 'out1';
+			RETURN FALSE;
+		END IF;
+		-- central unavailable / 5xx: roll back the MQ get. MQ redelivers; after BOTHRESH the message goes to D5.ERROR.
+		THROW USER EXCEPTION MESSAGE 2951 VALUES('D5 central processing unavailable', code);
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_PrepareAckCall
+	DECLARE CentralBaseUrl EXTERNAL CHARACTER 'http://127.0.0.1:8500';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = CentralBaseUrl || '/internal/ack';
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.HTTPRequestHeader."Content-Type" = 'application/json';
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		SET OutputRoot.JSON.Data = InputRoot.JSON.Data;
+		SET OutputRoot.JSON.Data.mqCorrelId = CAST(InputRoot.MQMD.CorrelId AS CHARACTER);
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_PrepareStatusCall
+	DECLARE CentralBaseUrl EXTERNAL CHARACTER 'http://127.0.0.1:8500';
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- ACE 13 HTTPInput exposes the raw query as HTTPInputHeader."X-Query-String" (e.g. eventId=<uuid>)
+		DECLARE qs CHARACTER COALESCE(InputRoot.HTTPInputHeader."X-Query-String", '');
+		DECLARE eid CHARACTER '';
+		DECLARE pos INTEGER POSITION('eventId=' IN qs);
+		IF pos > 0 THEN SET eid = SUBSTRING(qs FROM pos + 8 FOR 36); END IF;
+		-- only UUID characters are passed on (no URL injection towards the central service)
+		IF eid = '' OR TRANSLATE(eid, '0123456789abcdef-', '') <> '' THEN SET eid = 'invalid'; END IF;
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = CentralBaseUrl || '/internal/event-status?eventId=' || eid;
+		SET OutputRoot.Properties = InputRoot.Properties;
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_RelayStatus
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.HTTPReplyHeader."Content-Type" = 'application/json';
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'BLOB';
+		SET OutputRoot.BLOB.BLOB = COALESCE(InputRoot.BLOB.BLOB, CAST('{}' AS BLOB CCSID 1208));
+		SET OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode =
+			CAST(COALESCE(InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code", '200') AS INTEGER);
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE D5_StatusUnavailable
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties = InputRoot.Properties;
+		SET OutputRoot.HTTPReplyHeader."Content-Type" = 'application/json';
+		CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+		SET OutputRoot.JSON.Data.status = 'UNAVAILABLE';
+		SET OutputRoot.JSON.Data.detail = 'central ledger not reachable from ACE';
+		SET OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode = 503;
+		RETURN TRUE;
+	END;
+END MODULE;

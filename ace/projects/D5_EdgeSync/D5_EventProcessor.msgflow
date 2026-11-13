@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="D5_EventProcessor.msgflow" nsPrefix="D5_EventProcessor.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.CentralBaseUrl" name="CentralBaseUrl" defaultValueLiteral="http://127.0.0.1:8500">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="D5_EventProcessor" bundleName="D5_EventProcessor" pluginId="D5_EdgeSync"/>
+    <composition>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="20,40" queueName="D5.IN.CRITICAL" messageDomainProperty="JSON" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Critical_Events"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="20,150" queueName="D5.IN.NORMAL" messageDomainProperty="JSON" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Normal_Events"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="20,260" queueName="D5.IN.LOW" messageDomainProperty="JSON" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Low_Events"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="240,150" computeExpression="esql://routine/#D5_PrepareCentralCall.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="Prepare_Central_Call"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="460,150" URLSpecifier="http://127.0.0.1:8500/internal/process-event" httpMethod="POST" httpVersion="1.1" timeoutForServer="15" messageDomainProperty="JSON">
+        <translation xmi:type="utility:ConstantString" string="Central_Processing"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="700,60" computeExpression="esql://routine/#D5_BuildBusinessAck.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="Build_Business_Ack"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="930,60" persistenceMode="yes" queueName="D5.OUT.ACK" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Put_Business_Ack"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="700,260" computeExpression="esql://routine/#D5_HandleCentralError.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="Handle_Central_Error"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="930,200" persistenceMode="yes" queueName="D5.ERROR" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Park_On_Error_Queue"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="930,320" persistenceMode="yes" queueName="D5.OUT.ACK" transactionMode="yes">
+        <translation xmi:type="utility:ConstantString" string="Put_Rejection_Ack"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.error" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.CentralBaseUrl">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.CentralBaseUrl" bundleName="D5_EventProcessor" pluginId="D5_EdgeSync"/>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard>
+      <stickyNote location="20,320">
+        <body xmi:type="utility:ConstantString" string="Each MQ get, the central call and the ack put are one MQ unit of work. Central commits its ledger first and is idempotent on eventId, so a redelivery after a failure cannot create a second business transaction. HTTP 4xx = permanent rejection (parked on D5.ERROR + rejection ack). 5xx/timeout = rollback; MQ redelivers; after BOTHRESH(3) the message is moved to D5.ERROR - never discarded."/>
+      </stickyNote>
+    </stickyBoard>
+  </eClassifiers>
+</ecore:EPackage>

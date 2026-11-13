@@ -1,0 +1,20 @@
+# OPTIONAL permanent unit - NOT installed. start-d5.sh uses equivalent transient units (systemd-run).
+# To install later (privileged change, requires approval): cp d5-*.service /etc/systemd/system/ && systemctl daemon-reload
+[Unit]
+Description=D5 edge agent VESSEL-02
+After=network.target
+
+[Service]
+User=aceadmin
+Group=aceadmin
+WorkingDirectory=/home/aceadmin/ZMI-ADNOC-POC/D5-Edge-Demo
+Environment=PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/aceadmin/ZMI-ADNOC-POC/D5-Edge-Demo/edge-runtime/agent/main.py vessel-simulator/vessel-02/edge.json
+Restart=on-failure
+RestartSec=2
+CPUQuota=100%
+MemoryMax=512M
+MemorySwapMax=0
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,50 @@
+
+# Runtime logs
+logs/
+*.log
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Private keys and certificates
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.kdb
+*.sth
+
+# Credentials
+secrets/
+credentials/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+cat >> .gitignore <<'EOF'
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Runtime deployment state
+runtime/
+*.lock
+
+# SQLite runtime databases
+*.db
+*.db-wal
+*.db-shm
+
+# ACE generated logs and traces
+*.trace.*
+*.userTrace.*
+*.exceptionLog.txt
+*.events.txt*
+
+EOF

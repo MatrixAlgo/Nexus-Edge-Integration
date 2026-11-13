@@ -1,0 +1,15 @@
+* D5 Vessel-to-Office Edge Synchronization - queue definitions for queue manager D5QM ONLY.
+* Idempotent (REPLACE). Applied by mq/scripts/setup-mq.sh. Never run against TESTMQ/TESTMQ2/ZMIQM1/MFTQM.
+*
+* Inbound event queues, one per business priority. ACE flow D5_EventProcessor reads them under syncpoint.
+* After 3 rolled-back attempts ACE moves the message to BOQNAME (D5.ERROR) - nothing is silently discarded.
+DEFINE QLOCAL('D5.IN.CRITICAL') DESCR('D5 inbound vessel events - CRITICAL') DEFPSIST(YES) MSGDLVSQ(PRIORITY) BOTHRESH(3) BOQNAME('D5.ERROR') MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+DEFINE QLOCAL('D5.IN.NORMAL')   DESCR('D5 inbound vessel events - NORMAL')   DEFPSIST(YES) MSGDLVSQ(PRIORITY) BOTHRESH(3) BOQNAME('D5.ERROR') MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+DEFINE QLOCAL('D5.IN.LOW')      DESCR('D5 inbound vessel events - LOW')      DEFPSIST(YES) MSGDLVSQ(PRIORITY) BOTHRESH(3) BOQNAME('D5.ERROR') MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+* Business acknowledgements produced after the central DB commit (CorrelId = eventId)
+DEFINE QLOCAL('D5.OUT.ACK')     DESCR('D5 central business acknowledgements') DEFPSIST(YES) BOTHRESH(10) BOQNAME('D5.ERROR') MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+* Validation rejects and poison messages (backout threshold exceeded)
+DEFINE QLOCAL('D5.ERROR')       DESCR('D5 rejected / poison events')          DEFPSIST(YES) MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+* Dead-letter queue of D5QM (crtmqm -u D5.DLQ)
+DEFINE QLOCAL('D5.DLQ')         DESCR('D5QM dead-letter queue')               DEFPSIST(YES) MAXDEPTH(50000) MAXMSGL(4194304) REPLACE
+ALTER QMGR DEADQ('D5.DLQ')

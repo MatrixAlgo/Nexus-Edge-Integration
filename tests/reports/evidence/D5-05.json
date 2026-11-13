@@ -1,0 +1,360 @@
+{
+  "id": "D5-05",
+  "name": "Conflict detection and resolution (MNT record updated on vessel and in office while offline)",
+  "startedAt": "2026-11-12T08:33:42.829665Z",
+  "conflict": {
+    "conflict_id": "CNF-0002",
+    "record_id": "MNT-2008",
+    "vessel_id": "VESSEL-01",
+    "event_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+    "detected_at": "2026-11-12T08:33:45.201Z",
+    "status": "OPEN",
+    "base_version": 1,
+    "office_version": 2,
+    "vessel_version": 2,
+    "base_payload": {
+      "assignedVendor": "",
+      "equipment": "Main Engine",
+      "officeRemarks": "",
+      "plannedDate": "2026-11-20",
+      "runningHours": 12480,
+      "status": "IN_PROGRESS",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "",
+      "workPerformed": ""
+    },
+    "office_payload": {
+      "assignedVendor": "Gulf Marine Services",
+      "equipment": "Main Engine",
+      "officeRemarks": "Awaiting OEM spares",
+      "plannedDate": "2026-12-02",
+      "runningHours": 12480,
+      "status": "ON_HOLD",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Hold - spares",
+      "workPerformed": ""
+    },
+    "vessel_payload": {
+      "assignedVendor": "",
+      "equipment": "Main Engine",
+      "officeRemarks": "",
+      "plannedDate": "2026-11-20",
+      "runningHours": 12500,
+      "status": "COMPLETED",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Tested OK at 85% load",
+      "workPerformed": "Head overhauled, injectors replaced"
+    },
+    "merged_payload": {
+      "assignedVendor": "Gulf Marine Services",
+      "equipment": "Main Engine",
+      "officeRemarks": "Awaiting OEM spares",
+      "plannedDate": "2026-12-02",
+      "runningHours": 12500,
+      "status": "ON_HOLD",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Tested OK at 85% load",
+      "workPerformed": "Head overhauled, injectors replaced"
+    },
+    "field_decisions": [
+      {
+        "base": 12480,
+        "decision": "AUTO_MERGE",
+        "field": "runningHours",
+        "office": 12480,
+        "rule": "changed on vessel only",
+        "vessel": 12500,
+        "winner": "VESSEL"
+      },
+      {
+        "base": "IN_PROGRESS",
+        "decision": "MANUAL_REVIEW",
+        "field": "status",
+        "office": "ON_HOLD",
+        "rule": "critical field - manual review required",
+        "vessel": "COMPLETED",
+        "winner": null
+      },
+      {
+        "base": "",
+        "decision": "OWNER_RULE",
+        "field": "technicianRemarks",
+        "office": "Hold - spares",
+        "rule": "field owned by vessel",
+        "vessel": "Tested OK at 85% load",
+        "winner": "VESSEL"
+      },
+      {
+        "base": "",
+        "decision": "AUTO_MERGE",
+        "field": "workPerformed",
+        "office": "",
+        "rule": "changed on vessel only",
+        "vessel": "Head overhauled, injectors replaced",
+        "winner": "VESSEL"
+      },
+      {
+        "base": "",
+        "decision": "AUTO_MERGE",
+        "field": "assignedVendor",
+        "office": "Gulf Marine Services",
+        "rule": "changed in office only",
+        "vessel": "",
+        "winner": "OFFICE"
+      },
+      {
+        "base": "",
+        "decision": "AUTO_MERGE",
+        "field": "officeRemarks",
+        "office": "Awaiting OEM spares",
+        "rule": "changed in office only",
+        "vessel": "",
+        "winner": "OFFICE"
+      },
+      {
+        "base": "2026-11-20",
+        "decision": "AUTO_MERGE",
+        "field": "plannedDate",
+        "office": "2026-12-02",
+        "rule": "changed in office only",
+        "vessel": "2026-11-20",
+        "winner": "OFFICE"
+      }
+    ],
+    "final_payload": null,
+    "final_version": null,
+    "resolved_at": null,
+    "resolved_by": null,
+    "resolution_note": null
+  },
+  "resolution": {
+    "conflictId": "CNF-0002",
+    "status": "RESOLVED",
+    "finalVersion": 4,
+    "finalRecord": {
+      "assignedVendor": "Gulf Marine Services",
+      "equipment": "Main Engine",
+      "officeRemarks": "Awaiting OEM spares",
+      "plannedDate": "2026-12-02",
+      "runningHours": 12500,
+      "status": "COMPLETED",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Tested OK at 85% load",
+      "workPerformed": "Head overhauled, injectors replaced"
+    }
+  },
+  "vesselCopy": {
+    "record_id": "MNT-2008",
+    "record_type": "MAINTENANCE",
+    "vessel_id": "VESSEL-01",
+    "source_system": "VESSEL_AMOS",
+    "priority": "CRITICAL",
+    "version": 4,
+    "payload": {
+      "assignedVendor": "Gulf Marine Services",
+      "equipment": "Main Engine",
+      "officeRemarks": "Awaiting OEM spares",
+      "plannedDate": "2026-12-02",
+      "runningHours": 12500,
+      "status": "COMPLETED",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Tested OK at 85% load",
+      "workPerformed": "Head overhauled, injectors replaced"
+    },
+    "created_at": "2026-11-12T08:33:42.830Z",
+    "updated_at": "2026-11-12T08:33:45.854Z",
+    "updated_by": "technical-superintendent",
+    "sync_status": "SYNCED",
+    "events": [
+      {
+        "event_id": "9e481b8d-92bf-430a-bda0-e72e177ba6d1",
+        "event_type": "RECORD_CREATED",
+        "version": 1,
+        "status": "ACKNOWLEDGED",
+        "created_at": "2026-11-12T08:33:42.830Z",
+        "acked_at": "2026-11-12T08:33:43.825Z",
+        "central_outcome": "CREATED"
+      },
+      {
+        "event_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+        "event_type": "RECORD_UPDATED",
+        "version": 2,
+        "status": "ACKNOWLEDGED",
+        "created_at": "2026-11-12T08:33:43.840Z",
+        "acked_at": "2026-11-12T08:33:45.981Z",
+        "central_outcome": "CONFLICT_MANUAL_REVIEW"
+      }
+    ]
+  },
+  "history": {
+    "record_id": "MNT-2008",
+    "record_type": "MAINTENANCE",
+    "vessel_id": "VESSEL-01",
+    "priority": "CRITICAL",
+    "version": 4,
+    "payload": {
+      "assignedVendor": "Gulf Marine Services",
+      "equipment": "Main Engine",
+      "officeRemarks": "Awaiting OEM spares",
+      "plannedDate": "2026-12-02",
+      "runningHours": 12500,
+      "status": "COMPLETED",
+      "task": "Cylinder head overhaul - unit 3",
+      "technicianRemarks": "Tested OK at 85% load",
+      "workPerformed": "Head overhauled, injectors replaced"
+    },
+    "source_system": "VESSEL_AMOS",
+    "created_at": "2026-11-12T08:33:42.830Z",
+    "updated_at": "2026-11-12T08:33:45.854Z",
+    "updated_by": "technical-superintendent",
+    "conflict_open": 0,
+    "versions": [
+      {
+        "record_id": "MNT-2008",
+        "version": 1,
+        "payload": {
+          "assignedVendor": "",
+          "equipment": "Main Engine",
+          "officeRemarks": "",
+          "plannedDate": "2026-11-20",
+          "runningHours": 12480,
+          "status": "IN_PROGRESS",
+          "task": "Cylinder head overhaul - unit 3",
+          "technicianRemarks": "",
+          "workPerformed": ""
+        },
+        "changed_by": "e2e-test",
+        "change_source": "VESSEL_SYNC",
+        "event_id": "9e481b8d-92bf-430a-bda0-e72e177ba6d1",
+        "created_at": "2026-11-12T08:33:43.108Z"
+      },
+      {
+        "record_id": "MNT-2008",
+        "version": 2,
+        "payload": {
+          "assignedVendor": "Gulf Marine Services",
+          "equipment": "Main Engine",
+          "officeRemarks": "Awaiting OEM spares",
+          "plannedDate": "2026-12-02",
+          "runningHours": 12480,
+          "status": "ON_HOLD",
+          "task": "Cylinder head overhaul - unit 3",
+          "technicianRemarks": "Hold - spares",
+          "workPerformed": ""
+        },
+        "changed_by": "technical-superintendent",
+        "change_source": "OFFICE_AMOS",
+        "event_id": null,
+        "created_at": "2026-11-12T08:33:43.843Z"
+      },
+      {
+        "record_id": "MNT-2008",
+        "version": 3,
+        "payload": {
+          "assignedVendor": "Gulf Marine Services",
+          "equipment": "Main Engine",
+          "officeRemarks": "Awaiting OEM spares",
+          "plannedDate": "2026-12-02",
+          "runningHours": 12500,
+          "status": "ON_HOLD",
+          "task": "Cylinder head overhaul - unit 3",
+          "technicianRemarks": "Tested OK at 85% load",
+          "workPerformed": "Head overhauled, injectors replaced"
+        },
+        "changed_by": "MERGE(e2e-test+OFFICE)",
+        "change_source": "SYNC_MERGE",
+        "event_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+        "created_at": "2026-11-12T08:33:45.201Z"
+      },
+      {
+        "record_id": "MNT-2008",
+        "version": 4,
+        "payload": {
+          "assignedVendor": "Gulf Marine Services",
+          "equipment": "Main Engine",
+          "officeRemarks": "Awaiting OEM spares",
+          "plannedDate": "2026-12-02",
+          "runningHours": 12500,
+          "status": "COMPLETED",
+          "task": "Cylinder head overhaul - unit 3",
+          "technicianRemarks": "Tested OK at 85% load",
+          "workPerformed": "Head overhauled, injectors replaced"
+        },
+        "changed_by": "technical-superintendent",
+        "change_source": "CONFLICT_RESOLUTION",
+        "event_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+        "created_at": "2026-11-12T08:33:45.854Z"
+      }
+    ],
+    "transactions": [
+      {
+        "transaction_id": "TX-000024",
+        "event_id": "9e481b8d-92bf-430a-bda0-e72e177ba6d1",
+        "record_id": "MNT-2008",
+        "vessel_id": "VESSEL-01",
+        "action": "CREATED",
+        "version_after": 1,
+        "created_at": "2026-11-12T08:33:43.108Z"
+      },
+      {
+        "transaction_id": "TX-000025",
+        "event_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+        "record_id": "MNT-2008",
+        "vessel_id": "VESSEL-01",
+        "action": "CONFLICT_MANUAL_REVIEW",
+        "version_after": 3,
+        "created_at": "2026-11-12T08:33:45.201Z"
+      }
+    ],
+    "audit": [
+      {
+        "id": 47,
+        "ts": "2026-11-12T08:33:43.108Z",
+        "actor": "central-processor",
+        "action": "EVENT_PROCESSED",
+        "entity": "event",
+        "entity_id": "9e481b8d-92bf-430a-bda0-e72e177ba6d1",
+        "detail": "{\"outcome\":\"CREATED\",\"queue\":\"D5.IN.CRITICAL\",\"recordId\":\"MNT-2008\",\"transactionId\":\"TX-000024\"}"
+      },
+      {
+        "id": 48,
+        "ts": "2026-11-12T08:33:43.843Z",
+        "actor": "technical-superintendent",
+        "action": "OFFICE_UPDATED",
+        "entity": "record",
+        "entity_id": "MNT-2008",
+        "detail": "{\"version\":2}"
+      },
+      {
+        "id": 49,
+        "ts": "2026-11-12T08:33:45.201Z",
+        "actor": "policy-engine",
+        "action": "CONFLICT_DETECTED",
+        "entity": "record",
+        "entity_id": "MNT-2008",
+        "detail": "{\"conflictId\":\"CNF-0002\",\"manualFields\":[\"status\"],\"status\":\"OPEN\"}"
+      },
+      {
+        "id": 50,
+        "ts": "2026-11-12T08:33:45.201Z",
+        "actor": "central-processor",
+        "action": "EVENT_PROCESSED",
+        "entity": "event",
+        "entity_id": "d18d89ac-147e-4fb2-9588-1c83baad8d8b",
+        "detail": "{\"outcome\":\"CONFLICT_MANUAL_REVIEW\",\"queue\":\"D5.IN.CRITICAL\",\"recordId\":\"MNT-2008\",\"transactionId\":\"TX-000025\"}"
+      },
+      {
+        "id": 51,
+        "ts": "2026-11-12T08:33:45.854Z",
+        "actor": "technical-superintendent",
+        "action": "CONFLICT_RESOLVED",
+        "entity": "record",
+        "entity_id": "MNT-2008",
+        "detail": "{\"conflictId\":\"CNF-0002\",\"decisions\":{\"status\":\"VESSEL\"},\"finalVersion\":4,\"note\":\"Confirmed completion with chief engineer\"}"
+      }
+    ]
+  },
+  "durationSec": 7.0,
+  "passed": true,
+  "actual": "CNF-0002 on MNT-2008: manual=status, owner rule=technicianRemarks(VESSEL), auto-merged 5 fields; resolved by technical-superintendent -> v4; vessel converged (v4)"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "R-04",
+  "name": "Invalid event posted directly to ACE",
+  "startedAt": "2026-11-12T08:35:58.530928Z",
+  "http": 400,
+  "body": {
+    "status": "REJECTED",
+    "eventId": "not-a-uuid",
+    "errors": "eventId must be a lowercase UUID; recordId is required; vesselId is required; recordType is invalid; eventType is invalid; sequenceNumber is required; version is required; payload is required; priority must be CRITICAL, NORMAL or LOW; ",
+    "parkedOn": "D5.ERROR"
+  },
+  "d5Error": [
+    1,
+    2
+  ],
+  "durationSec": 2.0,
+  "passed": true,
+  "actual": "HTTP 400 eventId must be a lowercase UUID; recordId is required; vesselId is required; re; D5.ERROR 1 -> 2"
+}

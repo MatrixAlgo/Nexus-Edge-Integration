@@ -1,0 +1,296 @@
+{
+  "id": "D5-03",
+  "name": "Reconnection and priority order",
+  "startedAt": "2026-11-12T08:33:22.742906Z",
+  "deliveryOrder": [
+    [
+      "PR-1005",
+      "CRITICAL",
+      15,
+      14
+    ],
+    [
+      "EMR-4004",
+      "CRITICAL",
+      17,
+      15
+    ],
+    [
+      "PR-1006",
+      "CRITICAL",
+      18,
+      16
+    ],
+    [
+      "EMR-4005",
+      "CRITICAL",
+      20,
+      17
+    ],
+    [
+      "EMR-4006",
+      "CRITICAL",
+      22,
+      18
+    ],
+    [
+      "GRN-3002",
+      "NORMAL",
+      21,
+      19
+    ],
+    [
+      "MNT-2004",
+      "LOW",
+      14,
+      20
+    ],
+    [
+      "MNT-2005",
+      "LOW",
+      16,
+      21
+    ],
+    [
+      "MNT-2006",
+      "LOW",
+      19,
+      22
+    ],
+    [
+      "MNT-2007",
+      "LOW",
+      23,
+      23
+    ]
+  ],
+  "centralProcessingOrder": [
+    "PR-1005",
+    "EMR-4004",
+    "PR-1006",
+    "EMR-4005",
+    "EMR-4006",
+    "GRN-3002",
+    "MNT-2004",
+    "MNT-2005",
+    "MNT-2006",
+    "MNT-2007"
+  ],
+  "session": {
+    "id": 3,
+    "offline_since": "2026-11-12T08:33:14.701Z",
+    "reconnected_at": "2026-11-12T08:33:25.829Z",
+    "offline_duration_sec": 11.128413,
+    "backlog_at_start": 10,
+    "delivered": 10,
+    "failed": 0,
+    "drained_at": "2026-11-12T08:33:39.301Z",
+    "delivery_sequence": [
+      {
+        "ackedAt": "2026-11-12T08:33:26.854Z",
+        "eventId": "2b1425d8-86a5-4295-9bc7-2c42bd86fc5a",
+        "outcome": "CREATED",
+        "priority": "CRITICAL",
+        "recordId": "PR-1005",
+        "sequenceNumber": 15
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:28.878Z",
+        "eventId": "46317546-471f-4c24-b7a6-9e8261359c3f",
+        "outcome": "CREATED",
+        "priority": "CRITICAL",
+        "recordId": "EMR-4004",
+        "sequenceNumber": 17
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:29.926Z",
+        "eventId": "112283c1-299b-49e5-8024-443cc3935db5",
+        "outcome": "CREATED",
+        "priority": "CRITICAL",
+        "recordId": "PR-1006",
+        "sequenceNumber": 18
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:30.979Z",
+        "eventId": "7b40feb5-7d88-46c1-bcf3-88649a6e54fe",
+        "outcome": "CREATED",
+        "priority": "CRITICAL",
+        "recordId": "EMR-4005",
+        "sequenceNumber": 20
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:33.025Z",
+        "eventId": "ebc00f6e-987d-4fcb-8c6f-d3d63819eac1",
+        "outcome": "CREATED",
+        "priority": "CRITICAL",
+        "recordId": "EMR-4006",
+        "sequenceNumber": 22
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:34.068Z",
+        "eventId": "051613d5-3c64-4a34-9413-7ec37c011960",
+        "outcome": "CREATED",
+        "priority": "NORMAL",
+        "recordId": "GRN-3002",
+        "sequenceNumber": 21
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:35.097Z",
+        "eventId": "d9278dd2-8b33-4c82-88a5-5c512e477406",
+        "outcome": "CREATED",
+        "priority": "LOW",
+        "recordId": "MNT-2004",
+        "sequenceNumber": 14
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:37.211Z",
+        "eventId": "ac416f2f-ef81-476e-b34d-165ed3dacfc7",
+        "outcome": "CREATED",
+        "priority": "LOW",
+        "recordId": "MNT-2005",
+        "sequenceNumber": 16
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:38.294Z",
+        "eventId": "2bf565df-4b57-4d74-914f-8df95ad58119",
+        "outcome": "CREATED",
+        "priority": "LOW",
+        "recordId": "MNT-2006",
+        "sequenceNumber": 19
+      },
+      {
+        "ackedAt": "2026-11-12T08:33:39.301Z",
+        "eventId": "873633cc-d8a7-4ff2-95e5-1ccfca7253cc",
+        "outcome": "CREATED",
+        "priority": "LOW",
+        "recordId": "MNT-2007",
+        "sequenceNumber": 23
+      }
+    ]
+  },
+  "ledger": {
+    "d9278dd2-8b33-4c82-88a5-5c512e477406": {
+      "eventId": "d9278dd2-8b33-4c82-88a5-5c512e477406",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000020",
+      "processedAt": "2026-11-12T08:33:34.372Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:34.383Z",
+      "processingOrder": 20
+    },
+    "2b1425d8-86a5-4295-9bc7-2c42bd86fc5a": {
+      "eventId": "2b1425d8-86a5-4295-9bc7-2c42bd86fc5a",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000014",
+      "processedAt": "2026-11-12T08:33:26.090Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:26.095Z",
+      "processingOrder": 14
+    },
+    "ac416f2f-ef81-476e-b34d-165ed3dacfc7": {
+      "eventId": "ac416f2f-ef81-476e-b34d-165ed3dacfc7",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000021",
+      "processedAt": "2026-11-12T08:33:36.233Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:36.238Z",
+      "processingOrder": 21
+    },
+    "46317546-471f-4c24-b7a6-9e8261359c3f": {
+      "eventId": "46317546-471f-4c24-b7a6-9e8261359c3f",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000015",
+      "processedAt": "2026-11-12T08:33:27.921Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:27.926Z",
+      "processingOrder": 15
+    },
+    "112283c1-299b-49e5-8024-443cc3935db5": {
+      "eventId": "112283c1-299b-49e5-8024-443cc3935db5",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000016",
+      "processedAt": "2026-11-12T08:33:29.175Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:29.180Z",
+      "processingOrder": 16
+    },
+    "2bf565df-4b57-4d74-914f-8df95ad58119": {
+      "eventId": "2bf565df-4b57-4d74-914f-8df95ad58119",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000022",
+      "processedAt": "2026-11-12T08:33:37.495Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:37.500Z",
+      "processingOrder": 22
+    },
+    "7b40feb5-7d88-46c1-bcf3-88649a6e54fe": {
+      "eventId": "7b40feb5-7d88-46c1-bcf3-88649a6e54fe",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000017",
+      "processedAt": "2026-11-12T08:33:30.241Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:30.245Z",
+      "processingOrder": 17
+    },
+    "051613d5-3c64-4a34-9413-7ec37c011960": {
+      "eventId": "051613d5-3c64-4a34-9413-7ec37c011960",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000019",
+      "processedAt": "2026-11-12T08:33:33.331Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:33.337Z",
+      "processingOrder": 19
+    },
+    "ebc00f6e-987d-4fcb-8c6f-d3d63819eac1": {
+      "eventId": "ebc00f6e-987d-4fcb-8c6f-d3d63819eac1",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000018",
+      "processedAt": "2026-11-12T08:33:32.181Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:32.187Z",
+      "processingOrder": 18
+    },
+    "873633cc-d8a7-4ff2-95e5-1ccfca7253cc": {
+      "eventId": "873633cc-d8a7-4ff2-95e5-1ccfca7253cc",
+      "status": "PROCESSED",
+      "outcome": "CREATED",
+      "detail": {},
+      "transactionId": "TX-000023",
+      "processedAt": "2026-11-12T08:33:39.289Z",
+      "receivedCount": 1,
+      "ackRecorded": true,
+      "ackRecordedAt": "2026-11-12T08:33:39.294Z",
+      "processingOrder": 23
+    }
+  },
+  "durationSec": 18.1,
+  "passed": true,
+  "actual": "delivered PR-1005(C) > EMR-4004(C) > PR-1006(C) > EMR-4005(C) > EMR-4006(C) > GRN-3002(N) > MNT-2004(L) > MNT-2005(L) > MNT-2006(L) > MNT-2007(L); central processing order identical; session backlog 10 drained in 2026-11-12T08:33:39.301Z"
+}

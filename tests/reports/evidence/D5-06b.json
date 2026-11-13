@@ -1,0 +1,76 @@
+{
+  "id": "D5-06b",
+  "name": "Edge-agent version update, checksum/health-check protection and rollback",
+  "startedAt": "2026-11-12T08:34:03.930516Z",
+  "previous": {
+    "VESSEL-01": "1.0.0",
+    "VESSEL-02": "2.0.0"
+  },
+  "corruptDeployment": {
+    "id": 7,
+    "vessel_id": "VESSEL-02",
+    "action": "UPDATE",
+    "target_version": "2.72443.1",
+    "status": "FAILED",
+    "detail": {
+      "actual": "1b5cf0dfa2491a41fa567b1cca5980593240cb4b6e599cde2a18b6e63c36d448",
+      "error": "checksum mismatch - package rejected, still on 2.72443.0",
+      "expected": "dfefd64d230cf5ad4ff8d05f9817b4ed81b0eb09935b15d434c6ba481f3af799"
+    },
+    "from_version": "2.72443.0",
+    "created_at": "2026-11-12T08:34:09.966Z",
+    "updated_at": "2026-11-12T08:34:15.097Z"
+  },
+  "healthDeployment": {
+    "id": 8,
+    "vessel_id": "VESSEL-01",
+    "action": "UPDATE",
+    "target_version": "2.72443.2",
+    "status": "FAILED",
+    "detail": {
+      "activeVersion": "2.72443.0",
+      "automaticRollback": true,
+      "error": "health check failed: package self-test reported failure"
+    },
+    "from_version": "2.72443.0",
+    "created_at": "2026-11-12T08:34:09.969Z",
+    "updated_at": "2026-11-12T08:34:11.508Z"
+  },
+  "afterFailures": {
+    "VESSEL-01": "2.72443.0",
+    "VESSEL-02": "2.72443.0"
+  },
+  "rollbacks": [
+    {
+      "id": 10,
+      "vessel_id": "VESSEL-02",
+      "action": "ROLLBACK",
+      "target_version": null,
+      "status": "ROLLED_BACK",
+      "detail": {
+        "activeVersion": "2.0.0",
+        "rolledBackFrom": "2.72443.0"
+      },
+      "from_version": "2.72443.0",
+      "created_at": "2026-11-12T08:34:16.020Z",
+      "updated_at": "2026-11-12T08:34:20.015Z"
+    },
+    {
+      "id": 9,
+      "vessel_id": "VESSEL-01",
+      "action": "ROLLBACK",
+      "target_version": null,
+      "status": "ROLLED_BACK",
+      "detail": {
+        "activeVersion": "1.0.0",
+        "rolledBackFrom": "2.72443.0"
+      },
+      "from_version": "2.72443.0",
+      "created_at": "2026-11-12T08:34:16.020Z",
+      "updated_at": "2026-11-12T08:34:16.466Z"
+    }
+  ],
+  "durationSec": 16.1,
+  "passed": true,
+  "actual": "2.72443.0 APPLIED on both; 2.72443.1 rejected (checksum mismatch); 2.72443.2 failed health check -> auto rollback; operator rollback -> {'VESSEL-01': '1.0.0', 'VESSEL-02': '2.0.0'}"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "R-01",
+  "name": "Edge agent crash (SIGKILL) during an outage",
+  "startedAt": "2026-11-12T08:34:20.050568Z",
+  "pids": [
+    "72600",
+    "74093"
+  ],
+  "pendingAfterRestart": 5,
+  "statuses": [
+    "ACKNOWLEDGED",
+    "ACKNOWLEDGED",
+    "ACKNOWLEDGED",
+    "ACKNOWLEDGED",
+    "ACKNOWLEDGED"
+  ],
+  "durationSec": 16.1,
+  "passed": true,
+  "actual": "agent pid 72600 killed, restarted as 74093 with 5 pending events intact; all 5 acknowledged after reconnect"
+}

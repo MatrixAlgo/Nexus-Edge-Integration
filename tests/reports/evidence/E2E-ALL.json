@@ -1,0 +1,42 @@
+{
+  "id": "E2E-ALL",
+  "name": "Completeness: every acknowledged vessel event exists in the central ledger",
+  "startedAt": "2026-11-12T08:36:18.685411Z",
+  "checked": 52,
+  "missing": [],
+  "failed": [],
+  "overview": {
+    "generatedAt": "2026-11-12T08:36:18.736Z",
+    "totalVessels": 2,
+    "onlineVessels": 2,
+    "offlineVessels": 0,
+    "queuedEvents": 0,
+    "pendingAcknowledgements": 0,
+    "synchronizedEvents": 52,
+    "failedEvents": 0,
+    "edgeQueue": {
+      "pending": 0,
+      "inFlight": 0,
+      "awaitingAck": 0,
+      "acknowledged": 52,
+      "failed": 0
+    },
+    "centralLedger": {
+      "processed": 52,
+      "rejected": 0,
+      "ackPending": 0,
+      "duplicateDeliveries": 6
+    },
+    "conflicts": {
+      "total": 2,
+      "open": 1,
+      "autoResolved": 0,
+      "resolved": 1
+    },
+    "centralRecords": 50,
+    "businessTransactions": 52
+  },
+  "durationSec": 0.1,
+  "passed": true,
+  "actual": "52 acknowledged events checked, 0 missing centrally; business transactions=52; duplicates absorbed=6"
+}

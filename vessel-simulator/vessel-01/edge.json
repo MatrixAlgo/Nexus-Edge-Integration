@@ -1,0 +1,12 @@
+{
+  "vesselId": "VESSEL-01",
+  "host": "127.0.0.1",
+  "port": 8501,
+  "dataDir": "vessel-simulator/vessel-01/data",
+  "satelliteLinkUrl": "http://127.0.0.1:8511",
+  "eventsPath": "/d5/v1/events",
+  "statusPath": "/d5/v1/event-status",
+  "mgmtPrefix": "/mgmt",
+  "resourceTargets": {"cpuVcpu": 1, "memoryMB": 512, "diskMB": 2048},
+  "initialAgentVersion": "1.0.0"
+}

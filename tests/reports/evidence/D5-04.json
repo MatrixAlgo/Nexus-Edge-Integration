@@ -1,0 +1,209 @@
+{
+  "id": "D5-04",
+  "name": "Duplicate prevention (replay of an existing eventId)",
+  "startedAt": "2026-11-12T08:33:40.808613Z",
+  "before": {
+    "eventId": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+    "status": "PROCESSED",
+    "outcome": "CREATED",
+    "detail": {},
+    "transactionId": "TX-000013",
+    "processedAt": "2026-11-12T08:33:12.859Z",
+    "receivedCount": 1,
+    "ackRecorded": true,
+    "ackRecordedAt": "2026-11-12T08:33:12.864Z",
+    "processingOrder": 13
+  },
+  "after": {
+    "eventId": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+    "status": "PROCESSED",
+    "outcome": "CREATED",
+    "detail": {},
+    "transactionId": "TX-000013",
+    "processedAt": "2026-11-12T08:33:12.859Z",
+    "receivedCount": 3,
+    "ackRecorded": true,
+    "ackRecordedAt": "2026-11-12T08:33:12.864Z",
+    "processingOrder": 13
+  },
+  "record": {
+    "record_id": "PR-1004",
+    "record_type": "PR",
+    "vessel_id": "VESSEL-01",
+    "priority": "NORMAL",
+    "version": 1,
+    "payload": {
+      "item": "Hydraulic Pump",
+      "quantity": 2,
+      "requiredBy": "2026-12-15",
+      "status": "SUBMITTED",
+      "uom": "EA"
+    },
+    "source_system": "VESSEL_AMOS",
+    "created_at": "2026-11-12T08:33:12.639Z",
+    "updated_at": "2026-11-12T08:33:12.638Z",
+    "updated_by": "e2e-test",
+    "conflict_open": 0,
+    "versions": [
+      {
+        "record_id": "PR-1004",
+        "version": 1,
+        "payload": {
+          "item": "Hydraulic Pump",
+          "quantity": 2,
+          "requiredBy": "2026-12-15",
+          "status": "SUBMITTED",
+          "uom": "EA"
+        },
+        "changed_by": "e2e-test",
+        "change_source": "VESSEL_SYNC",
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "created_at": "2026-11-12T08:33:12.859Z"
+      }
+    ],
+    "transactions": [
+      {
+        "transaction_id": "TX-000013",
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "record_id": "PR-1004",
+        "vessel_id": "VESSEL-01",
+        "action": "CREATED",
+        "version_after": 1,
+        "created_at": "2026-11-12T08:33:12.859Z"
+      }
+    ],
+    "audit": [
+      {
+        "id": 34,
+        "ts": "2026-11-12T08:33:12.860Z",
+        "actor": "central-processor",
+        "action": "EVENT_PROCESSED",
+        "entity": "event",
+        "entity_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "detail": "{\"outcome\":\"CREATED\",\"queue\":\"D5.IN.NORMAL\",\"recordId\":\"PR-1004\",\"transactionId\":\"TX-000013\"}"
+      }
+    ]
+  },
+  "duplicateLog": [
+    {
+      "id": 6,
+      "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+      "vessel_id": "VESSEL-01",
+      "received_at": "2026-11-12T08:33:42.291Z",
+      "mq_queue": "D5.IN.NORMAL",
+      "note": "duplicate delivery - no business change"
+    },
+    {
+      "id": 5,
+      "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+      "vessel_id": "VESSEL-01",
+      "received_at": "2026-11-12T08:33:40.818Z",
+      "mq_queue": "D5.IN.NORMAL",
+      "note": "duplicate delivery - no business change"
+    }
+  ],
+  "edgeEvent": {
+    "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+    "sequence_number": 13,
+    "record_id": "PR-1004",
+    "record_type": "PR",
+    "event_type": "RECORD_CREATED",
+    "priority": "NORMAL",
+    "priority_rank": 1,
+    "version": 1,
+    "base_version": null,
+    "created_at": "2026-11-12T08:33:12.639Z",
+    "status": "ACKNOWLEDGED",
+    "attempts": 2,
+    "next_attempt_at": 1794472422.3217568,
+    "accepted_at": "2026-11-12T08:33:41.821Z",
+    "acked_at": "2026-11-12T08:33:42.610Z",
+    "delivery_order": 24,
+    "last_error": null,
+    "central_outcome": "CREATED",
+    "transaction_id": "TX-000013",
+    "mq_queue": "D5.IN.NORMAL",
+    "replay_count": 1,
+    "updated_at": "2026-11-12T08:33:42.610Z",
+    "event": {
+      "createdAt": "2026-11-12T08:33:12.639Z",
+      "eventId": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+      "eventType": "RECORD_CREATED",
+      "payload": {
+        "item": "Hydraulic Pump",
+        "quantity": 2,
+        "requiredBy": "2026-12-15",
+        "status": "SUBMITTED",
+        "uom": "EA"
+      },
+      "priority": "NORMAL",
+      "recordCreatedAt": "2026-11-12T08:33:12.638Z",
+      "recordId": "PR-1004",
+      "recordType": "PR",
+      "sequenceNumber": 13,
+      "sourceSystem": "VESSEL_AMOS",
+      "updatedAt": "2026-11-12T08:33:12.638Z",
+      "updatedBy": "e2e-test",
+      "version": 1,
+      "vesselId": "VESSEL-01"
+    },
+    "attemptsLog": [
+      {
+        "id": 38,
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "attempt_no": 1,
+        "phase": "SEND",
+        "started_at": "2026-11-12T08:33:12.644Z",
+        "duration_ms": 214,
+        "result": "OK",
+        "http_status": 202,
+        "detail": "{\"acceptedAt\":\"2026-11-12T08:33:12.852Z\",\"eventId\":\"4a8ed5ab-3207-49ae-8e10-4a4023d54bbf\",\"mqMsgId\":\"X'414d51204435514d2020202020202020976ff56a02340040'\",\"mqPriority\":5,\"note\":\"Persisted on IBM MQ (D5QM). NOT a business acknowledgement - poll /d5/v1/event-status.\",\"queue\":\"D5.IN.NORMAL\",\"status\":\"ACCEPTED\"}"
+      },
+      {
+        "id": 39,
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "attempt_no": 1,
+        "phase": "STATUS",
+        "started_at": "2026-11-12T08:33:13.359Z",
+        "duration_ms": 287,
+        "result": "ACKNOWLEDGED",
+        "http_status": 200,
+        "detail": "{\"ackRecorded\":true,\"ackRecordedAt\":\"2026-11-12T08:33:12.864Z\",\"detail\":{},\"eventId\":\"4a8ed5ab-3207-49ae-8e10-4a4023d54bbf\",\"outcome\":\"CREATED\",\"processedAt\":\"2026-11-12T08:33:12.859Z\",\"processingOrder\":13,\"receivedCount\":1,\"status\":\"PROCESSED\",\"transactionId\":\"TX-000013\"}"
+      },
+      {
+        "id": 63,
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "attempt_no": 2,
+        "phase": "SEND",
+        "started_at": "2026-11-12T08:33:40.815Z",
+        "duration_ms": 1005,
+        "result": "OK",
+        "http_status": 202,
+        "detail": "{\"acceptedAt\":\"2026-11-12T08:33:41.818Z\",\"eventId\":\"4a8ed5ab-3207-49ae-8e10-4a4023d54bbf\",\"mqMsgId\":\"X'414d51204435514d2020202020202020976ff56a0e340040'\",\"mqPriority\":5,\"note\":\"Persisted on IBM MQ (D5QM). NOT a business acknowledgement - poll /d5/v1/event-status.\",\"queue\":\"D5.IN.NORMAL\",\"status\":\"ACCEPTED\"}"
+      },
+      {
+        "id": 64,
+        "event_id": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+        "attempt_no": 2,
+        "phase": "STATUS",
+        "started_at": "2026-11-12T08:33:42.322Z",
+        "duration_ms": 287,
+        "result": "ACKNOWLEDGED",
+        "http_status": 200,
+        "detail": "{\"ackRecorded\":true,\"ackRecordedAt\":\"2026-11-12T08:33:12.864Z\",\"detail\":{},\"eventId\":\"4a8ed5ab-3207-49ae-8e10-4a4023d54bbf\",\"outcome\":\"CREATED\",\"processedAt\":\"2026-11-12T08:33:12.859Z\",\"processingOrder\":13,\"receivedCount\":3,\"status\":\"PROCESSED\",\"transactionId\":\"TX-000013\"}"
+      }
+    ]
+  },
+  "aceDuplicateResponse": {
+    "status": "ACCEPTED",
+    "eventId": "4a8ed5ab-3207-49ae-8e10-4a4023d54bbf",
+    "queue": "D5.IN.NORMAL",
+    "mqPriority": 5,
+    "acceptedAt": "2026-11-12T08:33:40.814Z",
+    "note": "Persisted on IBM MQ (D5QM). NOT a business acknowledgement - poll /d5/v1/event-status.",
+    "mqMsgId": "X'414d51204435514d2020202020202020976ff56a0d340040'"
+  },
+  "durationSec": 2.0,
+  "passed": true,
+  "actual": "eventId 4a8ed5ab received 3 times centrally; 2 duplicate deliveries logged; business transactions for the event: 1 (TX-000013)"
+}

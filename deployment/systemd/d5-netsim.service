@@ -1,0 +1,18 @@
+# OPTIONAL permanent unit - NOT installed. start-d5.sh uses equivalent transient units (systemd-run).
+# To install later (privileged change, requires approval): cp d5-*.service /etc/systemd/system/ && systemctl daemon-reload
+[Unit]
+Description=D5 satellite link simulator
+After=network.target
+
+[Service]
+User=aceadmin
+Group=aceadmin
+WorkingDirectory=/home/aceadmin/ZMI-ADNOC-POC/D5-Edge-Demo
+Environment=PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/aceadmin/ZMI-ADNOC-POC/D5-Edge-Demo/network-simulator/netsim.py network-simulator/netsim.json
+Restart=on-failure
+RestartSec=2
+
+
+[Install]
+WantedBy=multi-user.target

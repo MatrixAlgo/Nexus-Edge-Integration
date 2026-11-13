@@ -1,0 +1,22 @@
+{
+  "_doc": "Field-level conflict policy used when a vessel change and an office change touch the same field concurrently. Fields changed on only one side are merged automatically. A conflicting field is: owner VESSEL -> vessel value wins, owner OFFICE -> office value wins, listed in manualReview (or no owner) -> held for manual review. Never last-write-wins.",
+  "MAINTENANCE": {
+    "ownership": {"runningHours": "VESSEL", "workPerformed": "VESSEL", "technicianRemarks": "VESSEL", "completedBy": "VESSEL",
+                  "plannedDate": "OFFICE", "assignedVendor": "OFFICE", "budgetCode": "OFFICE", "officeRemarks": "OFFICE"},
+    "manualReview": ["status"]
+  },
+  "EMERGENCY_MAINTENANCE": {
+    "ownership": {"technicianRemarks": "VESSEL", "observedAt": "VESSEL", "assignedVendor": "OFFICE", "officeRemarks": "OFFICE"},
+    "manualReview": ["status", "safetyImpact", "equipment"]
+  },
+  "PR": {
+    "ownership": {"item": "VESSEL", "quantity": "VESSEL", "requiredBy": "VESSEL", "justification": "VESSEL",
+                  "supplier": "OFFICE", "approvalStatus": "OFFICE", "budgetCode": "OFFICE", "officeRemarks": "OFFICE"},
+    "manualReview": ["status"]
+  },
+  "GRN": {
+    "ownership": {"receivedQuantity": "VESSEL", "receivedBy": "VESSEL", "condition": "VESSEL",
+                  "invoiceMatched": "OFFICE", "officeRemarks": "OFFICE"},
+    "manualReview": ["status"]
+  }
+}

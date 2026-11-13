@@ -1,0 +1,72 @@
+{
+  "id": "D5-06a",
+  "name": "Fleet configuration v-next to GULF-FLEET (VESSEL-02 offline during publish)",
+  "startedAt": "2026-11-12T08:33:49.873429Z",
+  "publish": {
+    "configVersion": 3,
+    "vessels": [
+      "VESSEL-01",
+      "VESSEL-02"
+    ],
+    "config": {
+      "syncEnabled": true,
+      "dispatchIntervalSec": 1.0,
+      "ackPollIntervalSec": 0.5,
+      "ackTimeoutSec": 20,
+      "retryBaseSec": 2,
+      "retryMaxSec": 30,
+      "heartbeatSec": 4,
+      "requestTimeoutSec": 8,
+      "priorityRules": {
+        "EMERGENCY_MAINTENANCE": "CRITICAL",
+        "PR": "CRITICAL",
+        "GRN": "NORMAL",
+        "MAINTENANCE": "LOW"
+      }
+    }
+  },
+  "deploymentsWhileOffline": {
+    "VESSEL-02": {
+      "id": 4,
+      "config_version": 3,
+      "vessel_id": "VESSEL-02",
+      "status": "PENDING",
+      "detail": null,
+      "created_at": "2026-11-12T08:33:51.877Z",
+      "updated_at": "2026-11-12T08:33:51.877Z"
+    },
+    "VESSEL-01": {
+      "id": 3,
+      "config_version": 3,
+      "vessel_id": "VESSEL-01",
+      "status": "APPLIED",
+      "detail": "{\"activeConfigVersion\":3}",
+      "created_at": "2026-11-12T08:33:51.877Z",
+      "updated_at": "2026-11-12T08:33:54.572Z"
+    }
+  },
+  "deploymentsAfter": {
+    "VESSEL-02": {
+      "id": 4,
+      "config_version": 3,
+      "vessel_id": "VESSEL-02",
+      "status": "APPLIED",
+      "detail": "{\"activeConfigVersion\":3}",
+      "created_at": "2026-11-12T08:33:51.877Z",
+      "updated_at": "2026-11-12T08:34:03.381Z"
+    },
+    "VESSEL-01": {
+      "id": 3,
+      "config_version": 3,
+      "vessel_id": "VESSEL-01",
+      "status": "APPLIED",
+      "detail": "{\"activeConfigVersion\":3}",
+      "created_at": "2026-11-12T08:33:51.877Z",
+      "updated_at": "2026-11-12T08:33:54.572Z"
+    }
+  },
+  "newPrPriority": "CRITICAL",
+  "durationSec": 14.1,
+  "passed": true,
+  "actual": "config v3: VESSEL-01 APPLIED immediately; VESSEL-02 PENDING while offline, APPLIED after reconnect; new PR priority=CRITICAL"
+}

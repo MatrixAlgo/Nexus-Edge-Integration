@@ -1,0 +1,32 @@
+{
+  "id": "R-03",
+  "name": "Intermittent satellite link (3 s up / 3 s down) with 8 events",
+  "startedAt": "2026-11-12T08:34:58.351678Z",
+  "blocked": [
+    8,
+    31
+  ],
+  "attempts": [
+    2,
+    3,
+    1,
+    1,
+    1,
+    1,
+    1,
+    3
+  ],
+  "txs": [
+    "TX-000033",
+    "TX-000036",
+    "TX-000039",
+    "TX-000034",
+    "TX-000037",
+    "TX-000040",
+    "TX-000035",
+    "TX-000038"
+  ],
+  "durationSec": 60.2,
+  "passed": true,
+  "actual": "8/8 acknowledged; relay blocked 23 requests; send attempts per event [2, 3, 1, 1, 1, 1, 1, 3]"
+}

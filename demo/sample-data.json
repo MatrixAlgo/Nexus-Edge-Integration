@@ -1,0 +1,18 @@
+{
+  "_doc": "Baseline records loaded by demo/seed_demo.py after reset-d5.sh. They are created onboard and synchronised through ACE/MQ like any other record, so the office starts with the same versions (needed for the conflict scenario on MNT-2001).",
+  "VESSEL-01": [
+    {"recordType": "MAINTENANCE", "recordId": "MNT-2001", "priority": "CRITICAL",
+     "payload": {"equipment": "Main Engine", "task": "Cylinder head overhaul - unit 3", "status": "IN_PROGRESS", "runningHours": 12480,
+                 "workPerformed": "", "technicianRemarks": "", "completedBy": "", "plannedDate": "2026-11-20", "assignedVendor": "", "officeRemarks": ""}},
+    {"recordType": "PR", "recordId": "PR-1000", "priority": "NORMAL",
+     "payload": {"item": "Lube Oil SAE40", "quantity": 400, "uom": "L", "requiredBy": "2026-11-30", "justification": "Monthly consumption", "status": "SUBMITTED", "supplier": "", "approvalStatus": "PENDING"}},
+    {"recordType": "GRN", "recordId": "GRN-3000", "priority": "NORMAL",
+     "payload": {"poNumber": "PO-74001", "item": "Air Filter Element", "receivedQuantity": 12, "uom": "EA", "receivedBy": "Chief Officer", "condition": "GOOD", "status": "RECEIVED"}}
+  ],
+  "VESSEL-02": [
+    {"recordType": "MAINTENANCE", "recordId": "MNT-2501", "priority": "LOW",
+     "payload": {"equipment": "Aux Generator No.2", "task": "500h service", "status": "PLANNED", "runningHours": 8820, "workPerformed": "", "technicianRemarks": "", "plannedDate": "2026-11-25", "assignedVendor": "", "officeRemarks": ""}},
+    {"recordType": "PR", "recordId": "PR-1500", "priority": "NORMAL",
+     "payload": {"item": "Mooring Rope 64mm", "quantity": 220, "uom": "M", "requiredBy": "2026-12-10", "justification": "Replace worn mooring lines", "status": "SUBMITTED", "supplier": "", "approvalStatus": "PENDING"}}
+  ]
+}

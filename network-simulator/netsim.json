@@ -1,0 +1,8 @@
+{
+  "controlPort": 8510,
+  "stateFile": "network-simulator/link-state.json",
+  "links": {
+    "VESSEL-01": {"relayPort": 8511, "routes": {"ace": "127.0.0.1:7840", "central": "127.0.0.1:8500"}},
+    "VESSEL-02": {"relayPort": 8512, "routes": {"ace": "127.0.0.1:7840", "central": "127.0.0.1:8500"}}
+  }
+}

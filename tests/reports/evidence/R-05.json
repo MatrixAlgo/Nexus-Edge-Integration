@@ -1,0 +1,26 @@
+{
+  "id": "R-05",
+  "name": "Two vessels synchronising concurrently",
+  "startedAt": "2026-11-12T08:36:00.577325Z",
+  "orders": {
+    "VESSEL-01": [
+      "CRITICAL",
+      "CRITICAL",
+      "NORMAL",
+      "NORMAL",
+      "LOW",
+      "LOW"
+    ],
+    "VESSEL-02": [
+      "CRITICAL",
+      "CRITICAL",
+      "NORMAL",
+      "NORMAL",
+      "LOW",
+      "LOW"
+    ]
+  },
+  "durationSec": 18.1,
+  "passed": true,
+  "actual": "per-vessel delivery order {'VESSEL-01': 'CCNNLL', 'VESSEL-02': 'CCNNLL'} (no cross-vessel ordering claimed)"
+}
